@@ -117,6 +117,19 @@ const Chat: FC<IChatProps> = ({
     }
   }
 
+  const renderMessageContent = (content) => {
+    return content.split(' ').map((word, index) => {
+      if (word.startsWith('http://') || word.startsWith('https://')) {
+        return (
+          <a key={index} href={word} target="_self" rel="noopener noreferrer">
+            {word}
+          </a>
+        );
+      }
+      return word + ' ';
+    });
+  };
+
   return (
     <div className={cn(!feedbackDisabled && 'px-3.5', 'h-full')}>
       {/* Chat List */}
@@ -136,7 +149,7 @@ const Chat: FC<IChatProps> = ({
             <Question
               key={item.id}
               id={item.id}
-              content={item.content}
+              content={renderMessageContent(item.content)}
               useCurrentUserAvatar={useCurrentUserAvatar}
               imgSrcs={(item.message_files && item.message_files?.length > 0) ? item.message_files.map(item => item.url) : []}
             />
